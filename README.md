@@ -1,6 +1,6 @@
 # About
 
-An example configuration demonstrating SonarQube via Docker Compose on AWS 
+An example configuration demonstrating EFK via Docker Compose on AWS 
 
 # Usage
 
