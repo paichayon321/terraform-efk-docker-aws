@@ -20,6 +20,9 @@ usermod -aG docker $(whoami)
 which docker
 docker --version
 
+echo vm.max_map_count=262144 >> /etc/sysctl.conf
+sysctl -w vm.max_map_count=262144
+
 #docker container run hello-world
 
 echo '# To execute this docker-compose yml file use `docker-compose -f <file_name> up`
