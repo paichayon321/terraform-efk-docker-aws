@@ -27,47 +27,33 @@ sysctl -w vm.max_map_count=262144
 
 echo '# To execute this docker-compose yml file use `docker-compose -f <file_name> up`
 # Add the `-d` flag at the end for detached execution
-version: "2"
-
+version: '2'
 services:
-  sonarqube:
-    image: sonarqube
-    ports:
-      - "9000:9000"
-    networks:
-      - sonarnet
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
     environment:
-      - sonar.jdbc.username=sonar
-      - sonar.jdbc.password=
-      - sonar.jdbc.url=jdbc:postgresql://db:5432/sonar
+      discovery.type: single-node
+    ports:
+      - 9200:9200
+      - 9300:9300
     volumes:
-      - sonarqube_conf:/opt/sonarqube/conf
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
+      - esdata1:/usr/share/elasticsearch/data:rw
     ulimits:
       nofile:
        soft: 65536
        hard: 65536
-  db:
-    image: postgres
-    networks:
-      - sonarnet
-    environment:
-      - POSTGRES_USER=sonar
-      - POSTGRES_PASSWORD=
-    volumes:
-      - postgresql:/var/lib/postgresql
-      - postgresql_data:/var/lib/postgresql/data
 
-networks:
-  sonarnet:
-    driver: bridge
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.4.2
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    volumes:
+      - kibana_es_data:/usr/share/elasticsearch/data
 
 volumes:
-  sonarqube_conf:
-  sonarqube_data:
-  sonarqube_extensions:
-  postgresql:
-  postgresql_data:' > docker-compose.yml
+  kibana_es_data:
+  esdata1:' > docker-compose.yml
 
 docker-compose up -d
