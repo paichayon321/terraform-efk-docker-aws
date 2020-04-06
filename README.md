@@ -4,7 +4,7 @@ An example configuration demonstrating EFK via Docker Compose on AWS
 
 # Usage
 
-# Terraform-SeleniumDocker-on AWS
+# Terraform-EFK-on AWS
 Install terraform
 ```
 wget https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
